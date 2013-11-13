@@ -1,3 +1,5 @@
 *.o
 *.dylib
 *.so
+.DS_Store
+echoprint-codegen

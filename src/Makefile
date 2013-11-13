@@ -21,7 +21,6 @@ SONAME=$(LIBNAME).$(VERSION_MAJ)
 MODULES_LIB = \
     AudioBufferInput.o \
     AudioStreamInput.o \
-    Base64.o \
     Codegen.o \
     Fingerprint.o \
     MatrixUtility.o \

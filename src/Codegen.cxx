@@ -15,8 +15,6 @@
 #include "SubbandAnalysis.h"
 #include "Fingerprint.h"
 #include "Common.h"
-
-#include "Base64.h"
 #include <zlib.h>
 
 using std::string;
@@ -60,32 +58,5 @@ string Codegen::createCodeString(vector<FPCode> vCodes) {
         int hash = vCodes[i].code;
         codestream << std::setw(5) << hash;
     }
-    return compress(codestream.str());
-}
-
-
-string Codegen::compress(const string& s) {
-    long max_compressed_length = s.size()*2;
-    unsigned char *compressed = new unsigned char[max_compressed_length];
-
-    // zlib the code string
-    z_stream stream;
-    stream.next_in = (Bytef*)(unsigned char*)s.c_str();
-    stream.avail_in = (uInt)s.size();
-    stream.zalloc = (alloc_func)0;
-    stream.zfree = (free_func)0;
-    stream.opaque = (voidpf)0;
-    deflateInit(&stream, Z_DEFAULT_COMPRESSION);
-    do {
-        stream.next_out = compressed;
-        stream.avail_out = max_compressed_length;
-        if(deflate(&stream, Z_FINISH) == Z_STREAM_END) break;
-    } while (stream.avail_out == 0);
-    uint compressed_length = stream.total_out;
-    deflateEnd(&stream);
-
-    // base64 the zlib'd code string
-    string encoded = base64_encode(compressed, compressed_length, true);
-    delete [] compressed;
-    return encoded;
+    return codestream.str();
 }
